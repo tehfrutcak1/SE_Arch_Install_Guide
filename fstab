@@ -1,0 +1,29 @@
+#FSTAB = File System TABle
+#/etc/fstab: static file system information.
+#Use 'blkid' or 'lsblk -f' to print the universally unique identifier for a device.
+#This may be used with UUID= as a more robust way to name devices
+#that works even if disks are added and removed. See fstab(5) for more information on identifiers.
+
+# <file system>             <mount point>  <type>  <options>  <dump>  <pass>
+
+#EFI ESP AND SECURE BOOT
+UUID=PART1                            none     vfat     noauto,nodev,nosuid,noexec     0   2
+UUID=PART2 none     ext4     noauto,nodev,nosuid,noexec     0   2
+
+#LVM LOGICAL VOLUMES
+/dev/mapper/arch----vg-root--lv   /        ext4     auto,exec,rw                           0   1
+/dev/mapper/arch----vg-home--lv   /home    ext4     auto,exec,rw,nodev,nosuid              0   2
+/dev/mapper/arch----vg-var--lv    /var     ext4     auto,nosuid,noexec,rw                  0   2
+/dev/mapper/arch----vg-swap--lv   none     swap     swap                                   0   0
+
+#TMP PARTITIONS
+/dev/mapper/arch----vg-tmp--lv    /tmp     xfs      rw,noexec,nosuid,nodev                 0   0
+/var/tmp                          /var/tmp none     rw,noexec,nosuid,nodev                 0   0
+
+# You may want to use Tmpfs
+# See: https://www.kernel.org/doc/html/latest/filesystems/tmpfs.html
+## tmpfs                          /dev/shm tmpfs    rw,noexec,nodev,size=2G                0   0
+/tmp                              /tmp none         rw,noexec,nosuid,nodev,bind            0   0
+
+#PROC
+proc                              /proc   proc      nosuid,nodev,noexec,hidepid=2,gid=proc 0   0

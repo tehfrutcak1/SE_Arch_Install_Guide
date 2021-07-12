@@ -1,0 +1,56 @@
+#!/usr/bin/ash
+run_hook() {
+    modprobe -a -q dm-crypt >/dev/null 2>&1
+    modprobe loop
+
+# Legal warning
+# It is debatable whether or not you need a legale warning such as this one, nonetheless I still like to have one.
+
+    echo ''
+    echo 'Warning: Authorized Users Only!'
+    echo 'All others may be prosecuted.'
+    echo ''
+
+# Detect required (external) drive
+# If detection fails, the system shuts down.
+
+    [ "${quiet}" = "y" ] && CSQUIET=">/dev/null"
+    while [ ! -L '/dev/disk/by-id/PART2' ]; do
+
+        echo 'Decryption failed!'
+        echo ''
+        echo 'Shutting down...'
+        echo ''
+
+        shutdown 0
+
+    done
+
+# Open External drive
+
+    cryptsetup open /dev/disk/by-id/PART2 external
+    mkdir -p /mnt/external
+
+    mount /dev/mapper/external /mnt/external
+
+    cd /mnt/external
+
+# Decrypt key and decrypt internal drive
+
+    cryptsetup open key.img lukskey
+    # Replace the X with the `keyfile-offset` you set
+    cryptsetup --header header.img --key-file=/dev/mapper/lukskey --keyfile-offset=X --keyfile-size=8192 open /dev/disk/by-partuuid/ISD enc
+
+    cd /
+
+    cryptsetup close lukskey
+
+# Unmount the external drive and remove the directory it was mounted in
+
+    umount /mnt/external
+    rmdir /mnt/external
+
+    echo ''
+    echo 'Decryption was successful!'
+    echo ''
+}
