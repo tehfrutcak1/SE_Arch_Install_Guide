@@ -1373,4 +1373,4 @@ I encourage you to do the same.
 
 Forget all of this and install and harden Gentoo. https://wiki.gentoo.org/wiki/Handbook:AMD64 https://wiki.gentoo.org/wiki/Hardened_Gentoo
 Gentoo is better than Arch, btw.
-If you ignore this, please at least use OpenRC instead of SystemD.
+If you ignore this, please at least use OpenRC instead of Systemd.
