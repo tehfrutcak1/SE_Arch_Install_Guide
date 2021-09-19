@@ -1370,3 +1370,7 @@ Websites:
 This guide wouldn't be existing if it wasn't for the man pages. \
 **Most** commands (programs and scripts) were documented by me before using them. \
 I encourage you to do the same.
+
+Forget all of this and install and harden Gentoo. https://wiki.gentoo.org/wiki/Handbook:AMD64 https://wiki.gentoo.org/wiki/Hardened_Gentoo
+Gentoo is better than Arch, btw.
+If you ignore this, please at least use OpenRC instead of SystemD.
